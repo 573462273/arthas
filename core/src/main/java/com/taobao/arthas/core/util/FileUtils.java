@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.taobao.arthas.common.ArthasConstants;
+
 public class FileUtils {
 
     /**
@@ -159,6 +161,10 @@ public class FileUtils {
             out = new BufferedOutputStream(openOutputStream(file, false));
             for (String command: history) {
                 if (!StringUtils.isBlank(command)) {
+                    // 改写 auth command, TODO 更准确应该是用mask去掉密码信息
+                    if (command.trim().startsWith(ArthasConstants.AUTH)) {
+                        command = ArthasConstants.AUTH;
+                    }
                     out.write(command.getBytes("utf-8"));
                     out.write('\n');
                 }
